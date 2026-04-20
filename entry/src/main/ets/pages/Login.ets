@@ -16,7 +16,7 @@ struct Login {
   // 2. 这里的代码由状态改变触发，100% 保证在绝对安全的 UI 主线程运行！
   onLoginSuccess() {
     if (this.loginSuccessTrigger) {
-      console.info('[Login] 🚀 @Watch 触发，成功回到 UI 主线程，拥有完整的执行上下文！');
+      console.info('[Login] @Watch 触发，成功回到 UI 主线程，拥有完整的执行上下文！');
 
       try {
         // 彻底干掉 setTimeout！
@@ -71,7 +71,7 @@ struct Login {
       let resCode = Number(res.code);
 
       if (resCode === 200) {
-        console.info('[Login] ✅ 密码验证通过！');
+        console.info('[Login] 密码验证通过！');
         loginSuccess = true;
 
         let userId: number = 0; // 用于保存提取出来的用户ID
@@ -82,7 +82,7 @@ struct Login {
           let token = userData['token'] ? String(userData['token']) : '';
           let userPhone = userData['phone'] ? String(userData['phone']) : this.phone;
           let nickname = userData['nickname'] ? String(userData['nickname']) : '爱心人士';
-          userId = userData['id'] as number; // 🌟 提取 userId，用于绑定 Token
+          userId = userData['id'] as number; // 提取 userId，用于绑定 Token
           let avatar = userData['avatar'] ? String(userData['avatar']) : '';
 
           AppStorage.SetOrCreate('token', token);
@@ -96,38 +96,36 @@ struct Login {
           console.info('[Login] 全局状态保存成功！准备获取 Push Token...');
         }
 
-        // 3. 核心：获取华为 Push Token 并上报给后端
+        // 3. 获取华为 Push Token 并上报给后端
         if (userId) {
           try {
             // 尝试向华为系统申请真实的设备推送 Token
             let pushTokenStr = await pushService.getToken();
 
-            // 🌟 核心修复点：防范预览器返回空字符串的“假成功”陷阱
             if (!pushTokenStr || pushTokenStr.trim() === '') {
-              console.warn('👉 获取到了空 Token，强制转入 Mock 逻辑');
+              console.warn('获取到了空 Token，强制转入 Mock 逻辑');
               throw new Error("Empty Push Token"); // 强制抛出异常，进入 catch 块！
             }
 
             let tokenPayload: Record<string, string> = {
               'pushToken': pushTokenStr
             };
-            console.info('👉 获取真实 Push Token 成功: ' + pushTokenStr);
+            console.info('获取真实 Push Token 成功: ' + pushTokenStr);
 
-            // 🌟 修复路径：确保加上 /users 前缀 (取决于你 HttpUtil 的 baseUrl 配置)
             let resPut = await HttpUtil.put(`/users/${userId}/token`, tokenPayload);
-            console.info('👉 [真实设备] 上报结果: ' + JSON.stringify(resPut));
+            console.info('[真实设备] 上报结果: ' + JSON.stringify(resPut));
 
           } catch (pushErr) {
-            // 💡 降级处理：在预览器或普通模拟器中会走到这里
-            console.warn('👉 获取真实 Token 失败/为空，走入预览器 Mock 分支');
+            // 降级处理：在预览器或普通模拟器中会走到这里
+            console.warn(' 获取真实 Token 失败/为空，走入预览器 Mock 分支');
             let mockToken = `mock_hm_token_${this.phone}`;
             let mockPayload: Record<string, string> = {
               'pushToken': mockToken
             };
 
-            // 🌟 同样确保路径正确，并打印结果
+            // 同样确保路径正确，并打印结果
             let resPut = await HttpUtil.put(`/users/${userId}/token`, mockPayload);
-            console.info('👉 [预览器Mock] 上报结果: ' + JSON.stringify(resPut));
+            console.info('[预览器Mock] 上报结果: ' + JSON.stringify(resPut));
           }
         }
 

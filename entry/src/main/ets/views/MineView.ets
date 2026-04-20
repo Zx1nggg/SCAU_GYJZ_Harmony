@@ -30,10 +30,10 @@ export struct MineView {
 
   build() {
     Column() {
-      // 顶部资料卡：阳光渐变背景
+      // 顶部资料卡
       Column() {
         if (this.isLoggedIn) {
-          Image(this.avatar ? `http://127.0.0.1:8080${this.avatar}` : $r('app.media.startIcon'))
+          Image(this.avatar ? `http://192.168.1.102:8080${this.avatar}` : $r('app.media.startIcon'))
             .width(76).height(76)
             .borderRadius(38)
             .margin({ bottom: 12 })
@@ -76,7 +76,7 @@ export struct MineView {
           )
           Divider().color('#F5F5F5').margin({ left: 50, right: 20 })
 
-          // 🌟 新增：我的订阅入口
+          // 我的订阅入口
           this.MenuRow(
             'https://api.iconify.design/solar:star-bold-duotone.svg?color=%23FF7E5F',
             '我订阅的项目',

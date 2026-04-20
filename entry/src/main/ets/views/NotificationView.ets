@@ -8,7 +8,7 @@ export interface PushRecord {
   projectId?: number;
   title: string;
   content: string;
-  type: number;      // 1-项目进度，2-新项目，3-捐赠成功
+  type: number;      // 1-项目进度，2-新项目，3-项目完成
   sendTime: string;  // 对应 send_time
   sendStatus: number;// 1-成功，2-失败
 }

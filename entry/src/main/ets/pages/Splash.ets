@@ -14,7 +14,7 @@ struct Splash {
 
   build() {
     Column() {
-      // 顶部留白 
+      // 顶部留白
       Blank()
 
       // 配合圆形图标，去掉了之前的白色粗边框，改为轻微的弥散阴影
@@ -25,7 +25,7 @@ struct Splash {
         .borderRadius(50) // 设为 50 刚好是完美的圆形
         .shadow({ radius: 15, color: 'rgba(0,0,0,0.08)', offsetY: 5 })
 
-      // 主标语：因为背景变白了，文字必须改成深色（#333333）
+      // 主标语：因为背景变白了，文字改成深色（#333333）
       Text('让爱传递 · 点亮希望')
         .fontSize(28)
         .fontWeight(FontWeight.Bolder)
@@ -50,7 +50,7 @@ struct Splash {
     }
     .width('100%')
     .height('100%')
-    // 去掉 linearGradient，改回纯白背景
+    // 纯白背景
     .backgroundColor('#FFFFFF')
     .alignItems(HorizontalAlign.Center)
   }

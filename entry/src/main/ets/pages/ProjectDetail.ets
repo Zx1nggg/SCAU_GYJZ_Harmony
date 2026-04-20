@@ -231,7 +231,7 @@ struct ProjectDetail {
       } else {
         Scroll() {
           Column() {
-            Image(this.projectInfo['coverImage'] ? `http://172.30.160.1:8080${this.projectInfo['coverImage']}` : $r('app.media.startIcon'))
+            Image(this.projectInfo['coverImage'] ? `http://192.168.1.102:8080${this.projectInfo['coverImage']}` : $r('app.media.startIcon'))
               .width('100%').height(220).objectFit(ImageFit.Cover)
 
             Column() {

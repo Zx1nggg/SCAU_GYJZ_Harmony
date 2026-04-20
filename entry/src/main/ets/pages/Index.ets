@@ -8,7 +8,7 @@ struct Index {
   @State currentIndex: number = 0;
   private tabsController: TabsController = new TabsController();
 
-  // 🌟 使用在线的高质量 SVG 矢量图，实现简约风格
+  // 使用在线的 SVG 矢量图
   // [未选中状态线稿, 选中状态填充]
   private icons: Record<string, string[]> = {
     'home': [
@@ -55,7 +55,7 @@ struct Index {
       }.tabBar(this.TabBuilder('首页', 0, 'home'))
 
       TabContent() {
-        NotificationView() // （你需要建一个空白的 NotificationView.ets 以防报错）
+        NotificationView()
       }.tabBar(this.TabBuilder('通知', 1, 'notice'))
 
       TabContent() {
@@ -68,6 +68,6 @@ struct Index {
     })
     .width('100%')
     .height('100%')
-    .backgroundColor('#F7F8FA') // 极浅的暖灰底色
+    .backgroundColor('#F7F8FA')
   }
 }

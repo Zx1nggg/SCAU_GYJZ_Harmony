@@ -14,7 +14,7 @@ export interface DonationRecordDTO {
 struct MyDonations {
   @State records: DonationRecordDTO[] = [];
   @State isLoading: boolean = true;
-  // 新增：搜索关键词状态
+  // 搜索关键词状态
   @State searchQuery: string = '';
 
   @StorageLink('phone') phone: string = '';

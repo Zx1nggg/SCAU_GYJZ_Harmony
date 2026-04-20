@@ -17,7 +17,7 @@ struct MySubscriptions {
   @State isLoading: boolean = true;
   @StorageLink('userId') userId: number = 0;
 
-  // 新增：记录搜索框的关键字
+  // 记录搜索框的关键字
   @State searchQuery: string = '';
 
   aboutToAppear() {
@@ -47,7 +47,7 @@ struct MySubscriptions {
     }
   }
 
-  // 新增：基于关键字过滤列表数据 (本地实时计算)
+  // 基于关键字过滤列表数据 (实时计算)
   getFilteredRecords(): SubscriptionVO[] {
     if (!this.searchQuery.trim()) {
       return this.records;
@@ -67,7 +67,7 @@ struct MySubscriptions {
         Text('我订阅的项目').fontSize(20).fontWeight(FontWeight.Bold).margin({ left: 15 })
       }.width('100%').padding({ left: 20, right: 20, top: 15, bottom: 10 }).justifyContent(FlexAlign.Start).backgroundColor('#F7F8FA')
 
-      // 新增：搜索栏
+      // 搜索栏
       Search({ placeholder: '搜索订阅项目名称...', value: this.searchQuery })
         .searchButton('搜索')
         .width('92%')
@@ -98,7 +98,7 @@ struct MySubscriptions {
         }.margin({ top: 120 })
       } else {
         List({ space: 15 }) {
-          // 核心：ForEach 绑定的不再是 this.records，而是 this.getFilteredRecords()
+          // ForEach 绑定的不再是 this.records，而是 this.getFilteredRecords()
           ForEach(this.getFilteredRecords(), (item: SubscriptionVO) => {
             ListItem() {
               Row() {
