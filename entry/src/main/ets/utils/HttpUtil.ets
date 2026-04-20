@@ -1,7 +1,7 @@
 import http from '@ohos.net.http';
 import router from '@ohos.router';
 
-const BASE_URL: string = "http://192.168.1.102:8080/api/v1"; // 换成本地的局域网IP
+const BASE_URL: string = "http://192.168.59.89:8080/api/v1"; // 换成本地的局域网IP
 
 // 1. 明确定义后端返回的数据结构
 export interface BaseResponse {

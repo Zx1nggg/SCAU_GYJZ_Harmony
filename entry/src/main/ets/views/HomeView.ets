@@ -171,7 +171,7 @@ export struct HomeView {
                 GridItem() {
                   Column() {
                     Stack({ alignContent: Alignment.TopEnd }) {
-                      Image(item.coverImage ? `http://192.168.59.45:8080${item.coverImage}` : this.defaultImage)
+                      Image(item.coverImage ? `http://192.168.59.89:8080${item.coverImage}` : this.defaultImage)
                         .width('100%')
                         .height(110)
                         .objectFit(ImageFit.Cover)
