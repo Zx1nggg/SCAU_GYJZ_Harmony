@@ -1,7 +1,8 @@
 import http from '@ohos.net.http';
 import router from '@ohos.router';
 
-const BASE_URL: string = "http://192.168.59.89:8080/api/v1"; // 换成本地的局域网IP
+export const SERVER_HOST: string = "http://192.168.59.58:8080"; // 换局域网IP，全项目只改这一行！
+const BASE_URL: string = SERVER_HOST + "/api/v1";
 
 // 1. 明确定义后端返回的数据结构
 export interface BaseResponse {
@@ -13,6 +14,12 @@ export interface BaseResponse {
 }
 
 export default class HttpUtil {
+
+  static getImageUrl(path: string | undefined | null, defaultImg: string | Resource): string | Resource {
+    if (!path) return defaultImg;
+    if (path.startsWith('http')) return path;
+    return SERVER_HOST + path;
+  }
   // 2. 明确参数类型为 Object，明确返回类型为 Promise<BaseResponse>
   static async request(url: string, method: http.RequestMethod, data?: Object): Promise<BaseResponse> {
     let httpRequest = http.createHttp();

@@ -1,5 +1,6 @@
 import router from '@ohos.router';
 import promptAction from '@ohos.promptAction';
+import HttpUtil from '../utils/HttpUtil';
 
 @Component
 export struct MineView {
@@ -33,7 +34,7 @@ export struct MineView {
       // 顶部资料卡
       Column() {
         if (this.isLoggedIn) {
-          Image(this.avatar ? `http://192.168.59.89:8080${this.avatar}` : $r('app.media.startIcon'))
+          Image(HttpUtil.getImageUrl(this.avatar, $r('app.media.startIcon')))
             .width(76).height(76)
             .borderRadius(38)
             .margin({ bottom: 12 })
