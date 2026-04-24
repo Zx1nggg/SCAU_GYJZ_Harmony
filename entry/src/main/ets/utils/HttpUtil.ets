@@ -1,7 +1,7 @@
 import http from '@ohos.net.http';
 import router from '@ohos.router';
 
-export const SERVER_HOST: string = "http://192.168.59.58:8080"; // 换局域网IP，全项目只改这一行！
+export const SERVER_HOST: string = "http://192.168.59.61:8080"; // 换局域网IP，全项目只改这一行！
 const BASE_URL: string = SERVER_HOST + "/api/v1";
 
 // 1. 明确定义后端返回的数据结构

@@ -13,41 +13,53 @@ struct Register {
   @State countdown: number = 0; // 倒计时
   private timer: number = -1;
 
-  // 模拟发送验证码
-  sendCode() {
+  // 1. 真实发送验证码逻辑
+  async sendCode() {
     if (!/^1[3-9]\d{9}$/.test(this.phone)) {
       promptAction.showToast({ message: '请输入正确的手机号' });
       return;
     }
-    this.countdown = 60;
-    promptAction.showToast({ message: '验证码已发送 (模拟:1234)' });
 
-    this.timer = setInterval(() => {
-      if (this.countdown > 0) {
-        this.countdown--;
+    try {
+      let payload: Record<string, string> = { 'phone': this.phone };
+      let res: BaseResponse = await HttpUtil.post('/common/sendCode', payload);
+
+      if (res.code === 200) { // 请确保你的 Result 类成功时的 code 是 200
+        promptAction.showToast({ message: '验证码已发送' });
+
+        // 发送成功后开始 60 秒倒计时
+        this.countdown = 60;
+        this.timer = setInterval(() => {
+          if (this.countdown > 0) {
+            this.countdown--;
+          } else {
+            clearInterval(this.timer);
+          }
+        }, 1000);
       } else {
-        clearInterval(this.timer);
+        promptAction.showToast({ message: res.msg || '获取验证码失败' });
       }
-    }, 1000);
+    } catch (e) {
+      promptAction.showToast({ message: '网络错误或服务器异常' });
+    }
   }
 
+  // 2. 真实注册逻辑
   async handleRegister() {
     if (!this.phone || !this.code || !this.password) {
       promptAction.showToast({ message: '请完整填写信息' });
       return;
     }
 
-    // 模拟校验验证码
-    if (this.code !== '1234') {
-      promptAction.showToast({ message: '验证码错误 (请输入1234)' });
-      return;
-    }
 
     this.loading = true;
     try {
+      // 在 payload 中加入 verifyCode 字段传给后端
+      // 注意：这里的 key 'verifyCode' 需要与后端 User 实体类中的属性名保持完全一致
       let payload: Record<string, string> = {
         'phone': this.phone,
-        'password': this.password
+        'password': this.password,
+        'verifyCode': this.code
       };
 
       let res: BaseResponse = await HttpUtil.post('/donor/Register', payload);
@@ -56,6 +68,7 @@ struct Register {
         promptAction.showToast({ message: '注册成功，请登录' });
         router.back(); // 返回登录页
       } else {
+        // 后端抛出的 RuntimeException（例如“验证码不正确”）会通过这里展示给用户
         promptAction.showToast({ message: res.msg || '注册失败' });
       }
     } catch (e) {
@@ -90,7 +103,8 @@ struct Register {
           .onChange((value: string) => { this.phone = value })
 
         Row() {
-          TextInput({ placeholder: '验证码 (模拟1234)' })
+          // 修改了这里的 placeholder
+          TextInput({ placeholder: '请输入验证码' })
             .type(InputType.Number)
             .maxLength(6)
             .height(50)
